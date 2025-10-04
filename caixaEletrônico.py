@@ -41,17 +41,34 @@ class info_conta:
     def tela_app (self):
         print(f"Seja bem-vindo {self.titular}")
         print("Escolha uma das opçoes abaixo para continuarmos: ")
-    
+        
+    def calcular_saldo(self):
+        saldo = 0
+        for operacao in self.historico:
+            saldo += operacao["valor"]
+        return saldo
+        
     def extrato(self):
         
     
     def transferencia(self):
+        valor = float(input("Insira o valor da transferência: "))
+        saldo = self.calcular_saldo()
+        
+        if 0 < valor <= saldo:
+            self.historico.append({"tipo": "saque", "valor": -valor})
+            print(f"Saque no valor de R$ {valor:.2f} realizado com sucesso!")
+        else:
+            print("Saldo Insuficiente!")
     
-    def deposito(self, valor):
+    def deposito(self):
         valor = float(input("Insira o valor do depósito: "))
-        self.valor += valor
-        self.historico.append(f"Deposito no valor de R$ {valor: 2f}")
-        print (f"Deposito realizado com Sucesso!")
+        if valor > 0:
+            self.valor += valor
+            self.historico.append(f"Deposito no valor de R$ {valor: 2f}")
+            print (f"Deposito realizado com Sucesso!")
+        else:
+            print("Valor invalido")
             
         
 conta = info_conta("","")
